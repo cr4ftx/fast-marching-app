@@ -30,6 +30,7 @@ function FastMarchingImage() {
   const canvasRef = useRef(null)
   const [file, setFile] = useState()
   const [points, setPoints] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const ctx = canvasRef.current?.getContext('2d')
@@ -67,7 +68,10 @@ function FastMarchingImage() {
           <Button onClick={() => setPoints([])}>Recommencer</Button>
           <Button
             type="primary"
+            loading={loading}
             onClick={() => {
+              setLoading(true)
+
               const data = new FormData()
               data.append('file', file)
               data.append(
@@ -99,6 +103,7 @@ function FastMarchingImage() {
                   ctx.stroke()
                 })
                 .catch(console.error)
+                .finally(() => setLoading(false))
             }}
           >
             valider
